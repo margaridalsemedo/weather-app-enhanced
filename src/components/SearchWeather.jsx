@@ -4,27 +4,30 @@ const SearchWeather = () => {
   const [search, setSearch] = useState("london");
   const [data, setData] = useState({});
   const [input, setInput] = useState("");
-  let componentMounted = true;
 
   useEffect(() => {
     const fetchWeather = async () => {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=bae4b9812e732c245bcd888a9b3be7a6`
+        `https://api.openweathermap.org/data/2.5/weather?q=${search}&appid=895284fb2d2c50a520ea537456963d9c`
       );
-      if (componentMounted) {
-        setData(await response.json());
-        console.log(data);
-      }
-      return () => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        componentMounted = false;
-      };
+
+      setData(await response.json());
     };
     fetchWeather();
   }, [search]);
 
-  //icones consoante o tempo
+  //icones consoante o tempo / usar const
   let emoji = null;
+  let temp = null;
+  let time = null;
+  let date = null;
+  let weekday = null;
+  let temp_min = null;
+  let year = null;
+  let month = null;
+  let temp_max = null;
+
+  //switch case instead of else if
   if (typeof data.main != "undefined") {
     if (data.weather[0].main === "Clouds") {
       emoji = "fa-cloud";
@@ -39,28 +42,31 @@ const SearchWeather = () => {
     } else {
       emoji = "fa.smog";
     }
+
+    //temperatura
+
+    temp = (data.main.temp - 273.15).toFixed(2);
+    temp_min = (data.main.temp_min - 273.15).toFixed(2);
+    temp_max = (data.main.temp_max - 273.15).toFixed(2);
+
+    //Data const
+
+    const d = new Date();
+    date = d.getDate();
+    year = d.getFullYear();
+    month = d.toLocaleString("default", { month: "long" });
+    weekday = d.toLocaleString("default", { weekday: "long" });
+
+    //hora
+
+    time = d.toLocaleString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
   } else {
     return <div>...Loading</div>;
   }
-//temperatura
-  let temp = (data.min.temp - 273.15).toFixed(2);
-  let temp_min = (data.min.temp_min - 273.15).toFixed(2);
-  let temp_max = (data.min.temp_max - 273.15).toFixed(2);
-
-  //Data
-  let d = new Date();
-  let date = d.getDate();
-  let year = d.getFullYear();
-  let month = d.toLocaleString("default", { month: "long" });
-  let day = d.toLocaleString("default", { weekday: "long" });
-
-  //hora
-  let time = d.toLocaleString([], {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setSearch(input);
@@ -70,20 +76,20 @@ const SearchWeather = () => {
     <div>
       <div className="container mt-5">
         <div className="row justfy-content-center">
-          <div class="col-md-4">
-            <div class="card text-white text-center border-0">
+          <div className="col-md-4">
+            <div className="card text-white text-center border-0">
               <img
-              //fundo
+                //fundo
                 src={`https://source.unsplash.com/600x900/?${data.weather[0].main}`}
-                class="card-img"
+                className="card-img"
                 alt="..."
               />
-              <div class="card-img-overlay">
+              <div className="card-img-overlay">
                 <form onSubmit={handleSubmit}>
-                  <div class="input-group mb-4 w-75 mx-auto">
+                  <div className="input-group mb-4 w-75 mx-auto">
                     <input
                       type="search"
-                      class="form-control"
+                      className="form-control"
                       placeholder="Search City"
                       aria-label="Search City"
                       aria-describedby="basic-addon2"
@@ -95,7 +101,7 @@ const SearchWeather = () => {
 
                     <button
                       type="submit"
-                      class="input-group-text"
+                      className="input-group-text"
                       id="basic-addon2"
                     >
                       <i className="fas fa-search"></i>
@@ -103,16 +109,16 @@ const SearchWeather = () => {
                   </div>
                 </form>
                 <div className="bg-dark bg-opacity-50 py-3">
-                  <h2 class="card-title">{data.name}</h2>
-                  <p class="card-text lead">
-                    {day} {month} {date}, {year}
+                  <h2 className="card-title">{data.name}</h2>
+                  <p className="card-text lead">
+                    {weekday} {month} {date}, {year}
                     <br />
                     {time}
                   </p>
                   <hr />
                   <i className={`fas ${emoji} fa-4x`}></i>
                   <h1 className="fw-bolder mb-5">{temp}&deg;C</h1>
-                  <p className="lead fw-bolder mb-0"> {data.wather[0].main}</p>
+                  <p className="lead fw-bolder mb-0"> {data.weather[0].main}</p>
                   <p className="lead">
                     {temp_min}&deg;C | {temp_max}&deg;C
                   </p>
