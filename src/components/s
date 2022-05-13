@@ -1,0 +1,43 @@
+{
+  "coord": {
+    "lon": -9.1333,
+    "lat": 38.7167
+  },
+  "weather": [
+    {
+      "id": 800,
+      "main": "Clear",
+      "description": "clear sky",
+      "icon": "01d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 301.3,
+    "feels_like": 300.4,
+    "temp_min": 297.95,
+    "temp_max": 303.26,
+    "pressure": 1013,
+    "humidity": 31
+  },
+  "visibility": 10000,
+  "wind": {
+    "speed": 3.6,
+    "deg": 220
+  },
+  "clouds": {
+    "all": 0
+  },
+  "dt": 1652016453,
+  "sys": {
+    "type": 1,
+    "id": 6901,
+    "country": "PT",
+    "sunrise": 1651987883,
+    "sunset": 1652038481
+  },
+  "timezone": 3600,
+  "id": 2267057,
+  "name": "Lisbon",
+  "cod": 200
+}

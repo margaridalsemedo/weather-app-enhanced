@@ -16,41 +16,77 @@ const SearchWeather = () => {
     fetchWeather();
   }, [search]);
 
-  //icones consoante o tempo / usar const
-  let emoji = null;
-  let temp = null;
-  let time = null;
-  let date = null;
-  let weekday = null;
-  let temp_min = null;
-  let year = null;
-  let month = null;
-  let temp_max = null;
+  //icones consoante o tempo / usar const array destructing asignment
+
+  let [emoji, temp, time, weekday, date, temp_min, year, month, temp_max] =
+    Array(9).fill(null);
+  /*
+  let emoji,
+    temp,
+    time,
+    weekday,
+    date,
+    temp_min,
+    year,
+    month,
+    temp_max = null;*/
 
   //switch case instead of else if
+
   if (typeof data.main != "undefined") {
-    if (data.weather[0].main === "Clouds") {
-      emoji = "fa-cloud";
-    } else if (data.weather[0].main === "Thunderstorm") {
-      emoji = "fa-bolt";
-    } else if (data.weather[0].main === "Drizzle") {
-      emoji = "fa-bolt-rain";
-    } else if (data.weather[0].main === "Rain") {
-      emoji = "fa-cloud-shower-heavy";
-    } else if (data.weather[0].main === "Snow") {
-      emoji = "fa-snow-flake";
-    } else {
-      emoji = "fa.smog";
+    switch (data.weather[0].main) {
+      case "Clouds":
+        emoji = "fa-cloud";
+        break;
+
+      case "Thunderstorm":
+        emoji = "fa-bolt";
+        break;
+      case ' "Drizzle"':
+        emoji = "fa-bolt-rain";
+        break;
+
+      case "Rain":
+        emoji = "fa-cloud-shower-heavy";
+        break;
+
+      case "Snow":
+        emoji = "fa-snow-flake";
+        break;
+
+      default:
+        emoji = "fa.smog";
     }
 
     //temperatura
 
-    temp = (data.main.temp - 273.15).toFixed(2);
-    temp_min = (data.main.temp_min - 273.15).toFixed(2);
-    temp_max = (data.main.temp_max - 273.15).toFixed(2);
+    function fahrenheitToCelsius(temp) {
+      return (temp - 273.15).toFixed(2);
+    }
+
+    temp = fahrenheitToCelsius(data.main.temp);
+    temp_min = fahrenheitToCelsius(data.main.temp_min);
+    temp_max = fahrenheitToCelsius(data.main.temp_max);
+
+    /*
+    temp = data.main.temp - fahrenheitToCelsius;
+    temp_min = data.main.temp_min - fahrenheitToCelsius;
+    temp_max = data.main.temp_max - fahrenheitToCelsius;
+    */
+
+    // let [temp_min, temp_max, temp] = Array(3).fill(fahrenheitToCelsius);*/
+    /*const fahrenheitToCelsius = (273.15).toFixed(2);
+    console.log(fahrenheitToCelsius);*/
+    /*temp = data.main.temp - fahrenheitToCelsius;
+    temp_min = data.main.temp_min - fahrenheitToCelsius;
+    temp_max = data.main.temp_max - fahrenheitToCelsius;*/
+
+    //    const fahrenheitToCelsius = fahrenheit => fahrenheit -273.15;
 
     //Data const
-
+    /*input date in a specific format
+    output date month year weekday
+*/
     const d = new Date();
     date = d.getDate();
     year = d.getFullYear();
@@ -67,6 +103,7 @@ const SearchWeather = () => {
   } else {
     return <div>...Loading</div>;
   }
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setSearch(input);
